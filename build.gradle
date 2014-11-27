@@ -47,13 +47,6 @@ dependencies {
 	//compile 'group:name:version'
 }
 
-jar {
-	manifest {
-		//TODO
-		attributes "Version": project.version
-	}
-}
-
 processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version

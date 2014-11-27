@@ -1,20 +1,14 @@
 package com.shieldbug1.lib.util.helpers;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
-
-import com.shieldbug1.lib.area.WorldPosition;
 
 public final class GenerationHelper
 {
 	private GenerationHelper(){}
 	
-	public static void generateSphere(WorldPosition pos, Block block, double radius)
-	{
-		generateSphere(pos.getWorld(), pos.x, pos.y, pos.z, block, radius);
-	}
-	
-	public static void generateSphere(World world, int x, int y, int z, Block block, double radius)
+	public static void generateSphere(World world, BlockPos pos, Block block, double radius)
 	{
 		radius += 0.5D;
 		double radiusSquared = radius * radius;
@@ -29,21 +23,21 @@ public final class GenerationHelper
 					double distanceSquared = i*i + j*j + k*k;
 					if (distanceSquared <= radiusSquared)
 					{
-						world.setBlock(x + i, y + j, z + k, block);
-						world.setBlock(x - i, y + j, z + k, block);
-						world.setBlock(x + i, y - j, z + k, block);
-						world.setBlock(x + i, y + j, z - k, block);
-						world.setBlock(x - i, y - j, z + k, block);
-						world.setBlock(x + i, y - j, z - k, block);
-						world.setBlock(x - i, y + j, z - k, block);
-						world.setBlock(x - i, y - j, z - k, block);
+						world.setBlockState(pos.add(i, j, k), block.getDefaultState());
+						world.setBlockState(pos.add(-i, j, k), block.getDefaultState());
+						world.setBlockState(pos.add(i, -j, k), block.getDefaultState());
+						world.setBlockState(pos.add(i, j, -k), block.getDefaultState());
+						world.setBlockState(pos.add(-i, -j, k), block.getDefaultState());
+						world.setBlockState(pos.add(i, -j, -k), block.getDefaultState());
+						world.setBlockState(pos.add(-i, j, -k), block.getDefaultState());
+						world.setBlockState(pos.add(-i, -j, -k), block.getDefaultState());
 					}
 				}
 			}
 		}
 	}
 	
-	public static void generateCube(WorldPosition centre, Block block, int radius)
+	public static void generateCube(World world, BlockPos centre, Block block, int radius)
 	{
 		for(int i = -radius; i <= radius; i++)
 		{
@@ -51,7 +45,7 @@ public final class GenerationHelper
 			{
 				for(int k = -radius; k <= radius; k++)
 				{
-					centre.getWorld().setBlock(centre.x + i, centre.y + j, centre.z + k, block);
+					world.setBlockState(centre.add(i, j, k), block.getDefaultState());
 				}
 			}
 		}

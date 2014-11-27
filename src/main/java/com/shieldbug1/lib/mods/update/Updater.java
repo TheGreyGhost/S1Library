@@ -1,6 +1,6 @@
 package com.shieldbug1.lib.mods.update;
 
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.Side;
 /**
  * Updater interface to allow for easier mod updating.
  * @see UpdaterBase for default implementation.

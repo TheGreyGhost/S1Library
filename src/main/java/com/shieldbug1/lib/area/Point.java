@@ -2,13 +2,11 @@ package com.shieldbug1.lib.area;
 
 import static com.shieldbug1.lib.math.MathUtils.floor;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.shieldbug1.lib.area.WorldPosition.Validator;
 import com.shieldbug1.lib.math.MathUtils;
 
 /**
@@ -60,9 +58,9 @@ public final class Point implements Comparable<Point>
 		return Math.sqrt(distanceSquared(p));
 	}
 	
-	public Point goInDirection(ForgeDirection direction, int steps)
+	public Point goInDirection(EnumFacing direction, int steps)
 	{
-		return new Point(this.x + (direction.offsetX * steps), this.y + (direction.offsetY * steps), this.z + (direction.offsetZ * steps));
+		return new Point(this.x + (direction.getFrontOffsetX() * steps), this.y + (direction.getFrontOffsetY() * steps), this.z + (direction.getFrontOffsetZ() * steps));
 	}
 	
 	public Point moveTowards(Point p, int steps)
@@ -71,11 +69,6 @@ public final class Point implements Comparable<Point>
 		int newY = this.y > p.y ? -steps : this.y < p.y ? steps : 0;
 		int newZ = this.z > p.z ? -steps : this.z < p.z ? steps : 0;
 		return new Point(this.x + newX, this.y + newY, this.z + newZ);
-	}
-	
-	public WorldPosition asPosition(World world, Validator validator)
-	{
-		return new WorldPosition(world, this.x, this.y, this.z, validator);
 	}
 	
 	public static Point midPoint(Point a, Point b)

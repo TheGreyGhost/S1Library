@@ -3,8 +3,8 @@ package com.shieldbug1.lib.java;
 import java.lang.reflect.Field;
 import java.security.ProtectionDomain;
 
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import sun.misc.Unsafe;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 
 /**
  * A wrapper class that contains an instance of {@code Unsafe}.

@@ -1,6 +1,6 @@
 package com.shieldbug1.lib.mods.api;
 
-import cpw.mods.fml.common.ModContainer;
+import net.minecraftforge.fml.common.ModContainer;
 
 /**
  * An interface that describes all mods, that wraps around the ModContainer wrapper.

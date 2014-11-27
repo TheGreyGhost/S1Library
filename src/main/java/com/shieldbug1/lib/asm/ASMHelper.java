@@ -8,10 +8,10 @@ import static org.objectweb.asm.Type.VOID_TYPE;
 
 import java.util.Iterator;
 
+import net.minecraftforge.fml.common.FMLLog;
+
 import org.objectweb.asm.*;
 import org.objectweb.asm.tree.*;
-
-import cpw.mods.fml.common.FMLLog;
 
 public class ASMHelper
 {

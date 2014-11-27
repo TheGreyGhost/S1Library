@@ -9,15 +9,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.*;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.management.ServerConfigurationManager;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import com.google.common.collect.Lists;
-import com.shieldbug1.lib.area.WorldPosition;
 import com.shieldbug1.lib.math.MathUtils;
-
-import cpw.mods.fml.common.FMLCommonHandler;
 
 public final class EntityHelper
 {
@@ -96,8 +94,8 @@ public final class EntityHelper
 				player.worldObj.theProfiler.startSection("changeDimension");
 				ServerConfigurationManager config = player.mcServer.getConfigurationManager();
 				player.closeScreen();
-				player.dimension = newWorld.provider.dimensionId;
-				player.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.difficultySetting, newWorld.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
+				player.dimension = newWorld.provider.getDimensionId();
+				player.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.getDifficulty(), newWorld.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
 				oldWorld.removeEntity(player);
 				player.isDead = false;
 				player.setLocationAndAngles(x, y, z, player.rotationYaw, player.rotationPitch);
@@ -117,7 +115,7 @@ public final class EntityHelper
 					player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), potionIterator.next()));
 				}
 				player.playerNetServerHandler.sendPacket(new S1FPacketSetExperience(player.experience, player.experienceTotal, player.experienceLevel));
-				FMLCommonHandler.instance().firePlayerChangedDimensionEvent(player, oldWorld.provider.dimensionId, player.dimension);
+				FMLCommonHandler.instance().firePlayerChangedDimensionEvent(player, oldWorld.provider.getDimensionId(), player.dimension);
 			}
 			player.worldObj.theProfiler.endSection();
 			return player;
@@ -142,25 +140,11 @@ public final class EntityHelper
 	}
 	
 	/**
-	 * Convenience method for {@link #teleportEntity(Entity, World, double, double, double)}.
-	 */
-	public static Entity teleportEntity(Entity entity, WorldPosition position)
-	{
-		return teleportEntity(entity, position.getWorld(), position.x, position.y, position.z);
-	}
-	
-	/**
 	 * @param entity - the entity to get the facing direction for.
 	 * @return the ForgeDirection the entity is facing.
 	 */
-	public static ForgeDirection getEntityFaceDirection(EntityLivingBase entity)
+	public static EnumFacing getEntityFaceDirection(EntityLivingBase entity)
 	{
-		switch(MathUtils.floor(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 0b11)
-		{
-		case 0: return ForgeDirection.NORTH;
-		case 1: return ForgeDirection.EAST;
-		case 2: return ForgeDirection.SOUTH;
-		default: return ForgeDirection.WEST;
-		}
+		return entity.func_174811_aO();
 	}
 }

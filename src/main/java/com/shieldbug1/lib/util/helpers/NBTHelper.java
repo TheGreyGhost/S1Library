@@ -82,10 +82,10 @@ public final class NBTHelper
 	 */
 	public static NBTTagCompound getItemStackNBTTagCompound(ItemStack stack)
 	{
-		if(stack.stackTagCompound == null)
+		if(stack.getTagCompound() == null)
 		{
-			stack.stackTagCompound = new NBTTagCompound();
+			stack.setTagCompound(new NBTTagCompound());
 		}
-		return stack.stackTagCompound;
+		return stack.getTagCompound();
 	}
 }

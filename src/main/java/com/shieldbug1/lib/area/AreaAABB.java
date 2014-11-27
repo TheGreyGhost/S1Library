@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.google.common.collect.Lists;
-import com.shieldbug1.lib.area.WorldPosition.Validator;
 
 public final class AreaAABB
 {
@@ -64,25 +63,9 @@ public final class AreaAABB
 		return points;
 	}
 	
-	public List<WorldPosition> getWorldPositions(World world, Validator validator) //more efficient than transforming a whole list.
-	{
-		List<WorldPosition> positions = Lists.newLinkedList();
-		for(int x = this.minX; x < this.maxX; x++)
-		{
-			for(int y = this.minY; y < this.maxY; y++)
-			{
-				for(int z = this.minZ; z < this.maxZ; z++)
-				{
-					positions.add(new Point(x, y, z).asPosition(world, validator));
-				}
-			}
-		}
-		return positions;
-	}
-	
 	public AxisAlignedBB toAABB()
 	{
-		return AxisAlignedBB.getBoundingBox(this.minX, this.minY, this.minZ, this.maxX + 1, this.maxY + 1, this.maxZ + 1);
+		return AxisAlignedBB.fromBounds(this.minX, this.minY, this.minZ, this.maxX + 1, this.maxY + 1, this.maxZ + 1);
 	}
 	
 	public void validate()

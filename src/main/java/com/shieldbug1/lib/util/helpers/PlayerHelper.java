@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.common.util.FakePlayer;
-import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public final class PlayerHelper
 {
@@ -15,7 +15,7 @@ public final class PlayerHelper
 	{
 		if(FMLCommonHandler.instance().getMinecraftServerInstance() != null && player != null)
 		{
-			return FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().func_152596_g(player.getGameProfile());
+			return FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getOppedPlayers().getEntry(player.getGameProfile()) != null;
 		}
 		return false;
 	}
@@ -51,9 +51,9 @@ public final class PlayerHelper
 		float playerPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch);
 		float playerYaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw);
 		double playerPosX = player.prevPosX + (player.posX - player.prevPosX);
-		double playerPosY = (player.prevPosY + (player.posY - player.prevPosY) + 1.6200000000000001D) - player.yOffset;
+		double playerPosY = (player.prevPosY + (player.posY - player.prevPosY) + 1.6200000000000001D) - player.getYOffset();
 		double playerPosZ = player.prevPosZ + (player.posZ - player.prevPosZ);
-		Vec3 vecPlayer = Vec3.createVectorHelper(playerPosX, playerPosY, playerPosZ);
+		Vec3 vecPlayer = new Vec3(playerPosX, playerPosY, playerPosZ);
 		double cosYaw = Math.cos(Math.toRadians(-playerYaw) - Math.PI);
 		double sinYaw = Math.sin(Math.toRadians(-playerYaw) - Math.PI);
 		double cosPitch = -Math.cos(Math.toRadians(-playerPitch));

@@ -5,10 +5,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
+import net.minecraftforge.fml.common.FMLCommonHandler;
+
 import com.shieldbug1.lib.java.Java;
 import com.shieldbug1.lib.mods.api.ModBase;
-
-import cpw.mods.fml.common.FMLCommonHandler;
 
 /**
  * This class is instantiated and created automatically for all of my mods.

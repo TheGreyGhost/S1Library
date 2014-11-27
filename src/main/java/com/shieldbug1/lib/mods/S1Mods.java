@@ -1,9 +1,9 @@
 package com.shieldbug1.lib.mods;
 
+import net.minecraftforge.fml.common.*;
+
 import com.shieldbug1.lib.mods.api.IMod;
 import com.shieldbug1.lib.mods.api.ModBase;
-
-import cpw.mods.fml.common.*;
 
 /**
  * All mods created by me. These <b>must</b> implement {@link ModBase} (in the base class).

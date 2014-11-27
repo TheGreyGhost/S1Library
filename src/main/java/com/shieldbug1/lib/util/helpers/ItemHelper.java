@@ -176,13 +176,13 @@ public final class ItemHelper
 						{
 							if(o1.hasTagCompound() && o2.hasTagCompound()) //Both have compound?
 							{
-								if(ItemHelper.isNBTEqual(o1.stackTagCompound, o2.stackTagCompound)) //Same NBT data?
+								if(ItemHelper.isNBTEqual(o1.getTagCompound(), o2.getTagCompound())) //Same NBT data?
 								{
 									return o1.stackSize < o2.stackSize ? -1 : o1.stackSize == o2.stackSize ? 0 : -1; //First stack size is smaller, comes before. Stack size is equal, then they are equal. Stack size is greater, comes after.
 								}
 								else	
 								{		
-									return o1.stackTagCompound.hashCode() < o2.stackTagCompound.hashCode() ? -1 : o1.stackTagCompound.hashCode() == o2.stackTagCompound.hashCode() ? 0 : 1; //Hashcode implementation, we resort to hashcode reliance. Smaller hashcode goes first.
+									return o1.getTagCompound().hashCode() < o2.getTagCompound().hashCode() ? -1 : o1.getTagCompound().hashCode() == o2.getTagCompound().hashCode() ? 0 : 1; //Hashcode implementation, we resort to hashcode reliance. Smaller hashcode goes first.
 								}
 							}
 							else
@@ -249,7 +249,7 @@ public final class ItemHelper
 	
 	public static boolean areItemsEqualWithNBT(ItemStack stack1, ItemStack stack2)
 	{
-		return areItemsEqual(stack1, stack2) && isNBTEqual(stack1.stackTagCompound, stack2.stackTagCompound);
+		return areItemsEqual(stack1, stack2) && isNBTEqual(stack1.getTagCompound(), stack2.getTagCompound());
 	}
 	
 	public static boolean isNBTEqual(NBTTagCompound compound1, NBTTagCompound compound2)
@@ -259,7 +259,7 @@ public final class ItemHelper
 	
 	public static boolean areItemsEqualWithMetadataAndNBT(ItemStack stack1, ItemStack stack2)
 	{
-		return areItemsEqualWithMetadata(stack1, stack2) && isNBTEqual(stack1.stackTagCompound, stack2.stackTagCompound);
+		return areItemsEqualWithMetadata(stack1, stack2) && isNBTEqual(stack1.getTagCompound(), stack2.getTagCompound());
 	}
 	
 	public static Comparator<ItemStack> getComparator(SortLevel level)

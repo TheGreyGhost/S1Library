@@ -3,12 +3,12 @@ package com.shieldbug1.lib.java;
 import java.lang.reflect.*;
 import java.util.Map;
 
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.Maps;
-
-import cpw.mods.fml.relauncher.ReflectionHelper;
 
 /**
  * Class to keep all reflective fields and classes that require being accessed at times.

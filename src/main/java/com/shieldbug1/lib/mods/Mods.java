@@ -1,8 +1,8 @@
 package com.shieldbug1.lib.mods;
 
-import com.shieldbug1.lib.mods.api.IMod;
+import net.minecraftforge.fml.common.*;
 
-import cpw.mods.fml.common.*;
+import com.shieldbug1.lib.mods.api.IMod;
 
 public enum Mods implements IMod
 {

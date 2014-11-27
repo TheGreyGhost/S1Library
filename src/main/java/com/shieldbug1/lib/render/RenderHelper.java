@@ -1,9 +1,10 @@
 package com.shieldbug1.lib.render;
 
+import static net.minecraft.client.renderer.GlStateManager.*;
 import static org.lwjgl.opengl.GL11.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.*;
 
 import com.shieldbug1.lib.java.ReflectionCache;
 import com.shieldbug1.lib.repackage.speedytools.common.utilities.OpenGLdebugging;
@@ -42,26 +43,26 @@ public final class RenderHelper
 
 		if (alpha != 255)
 		{
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			enableBlend(); //glEnable(GL_BLEND);
+			blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		}
-
-		glColor4f(r, g, b, alpha / 255F);
-
-		Tessellator t = Tessellator.instance;
-		t.startDrawingQuads();
+		color(r, g, b, alpha / 255F); //glColor4f(r, g, b, alpha / 255F);
+		
+		Tessellator t = Tessellator.getInstance();
+		WorldRenderer renderer = t.getWorldRenderer();
+		renderer.startDrawingQuads();
 		{
-			t.addVertex(x, y + height, zLevel);
-			t.addVertex(x + width, y + height, zLevel);
-			t.addVertex(x + width, y, zLevel);
-			t.addVertex(x, y, zLevel);
+			renderer.addVertex(x, y + height, zLevel);
+			renderer.addVertex(x + width, y + height, zLevel);
+			renderer.addVertex(x + width, y, zLevel);
+			renderer.addVertex(x, y, zLevel);
 		}
 		t.draw();
 
 		glEnable(GL_TEXTURE_2D); //Re-enable everything.
 		if (alpha != 255)
 		{
-			glDisable(GL_BLEND);
+			disableBlend(); //glDisable(GL_BLEND);
 		}
 	}
 
@@ -89,13 +90,14 @@ public final class RenderHelper
 		int uEnd = u + uSize;
 		int vEnd = v + vSize;
 
-		Tessellator t = Tessellator.instance;
-		t.startDrawingQuads();
+		Tessellator t = Tessellator.getInstance();
+		WorldRenderer render = t.getWorldRenderer();
+		render.startDrawingQuads();
 		{
-			t.addVertexWithUV(x, y + height, zLevel, u * uFact, vEnd * vFact);
-			t.addVertexWithUV(x + width, y + height, zLevel, uEnd * uFact, vEnd * vFact);
-			t.addVertexWithUV(x + width, y, zLevel, uEnd * uFact, v * vFact);
-			t.addVertexWithUV(x, y, zLevel, u * uFact, v * vFact);
+			render.addVertexWithUV(x, y + height, zLevel, u * uFact, vEnd * vFact);
+			render.addVertexWithUV(x + width, y + height, zLevel, uEnd * uFact, vEnd * vFact);
+			render.addVertexWithUV(x + width, y, zLevel, uEnd * uFact, v * vFact);
+			render.addVertexWithUV(x, y, zLevel, u * uFact, v * vFact);
 		}
 		t.draw();
 	}
@@ -107,12 +109,15 @@ public final class RenderHelper
 
 	public static void drawTexturedQuadFit(int x, int y, int width, int height, float zLevel)
 	{
-		Tessellator t = Tessellator.instance;
-		t.startDrawingQuads();
-		t.addVertexWithUV(x, y + height, zLevel, 0, 1);
-		t.addVertexWithUV(x + width, y + height, zLevel, 1, 1);
-		t.addVertexWithUV(x + width, y, zLevel, 1, 0);
-		t.addVertexWithUV(x, y, zLevel, 0, 0);
+		Tessellator t = Tessellator.getInstance();
+		WorldRenderer render = t.getWorldRenderer();
+		render.startDrawingQuads();
+		{
+			render.addVertexWithUV(x, y + height, zLevel, 0, 1);
+			render.addVertexWithUV(x + width, y + height, zLevel, 1, 1);
+			render.addVertexWithUV(x + width, y, zLevel, 1, 0);
+			render.addVertexWithUV(x, y, zLevel, 0, 0);
+		}
 		t.draw();
 	}
 

@@ -15,7 +15,7 @@ public final class ClientUtils
 	 */
 	public static <T> ListenableFuture<T> scheduleCallable(Callable<T> callable)
 	{
-		return Minecraft.getMinecraft().func_152343_a(callable);
+		return Minecraft.getMinecraft().addScheduledTask(callable);
 	}
 	
 	/**
@@ -23,6 +23,6 @@ public final class ClientUtils
 	 */
 	public static void scheduleRunnable(Runnable runnable)
 	{
-		Minecraft.getMinecraft().func_152344_a(runnable);
+		Minecraft.getMinecraft().addScheduledTask(runnable);
 	}
 }

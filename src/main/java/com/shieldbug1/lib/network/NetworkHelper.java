@@ -1,18 +1,20 @@
 package com.shieldbug1.lib.network;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufOutputStream;
 
-import java.io.IOException;
+import java.io.*;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.*;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 import com.shieldbug1.lib.java.Java;
-
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 public final class NetworkHelper
 {
@@ -25,7 +27,7 @@ public final class NetworkHelper
 	{
 		if(entity.worldObj instanceof WorldServer)
 		{
-			((WorldServer)entity.worldObj).getEntityTracker().func_151247_a(entity, wrapper.getPacketFrom(message));
+			((WorldServer)entity.worldObj).getEntityTracker().sendToAllTrackingEntity(entity, wrapper.getPacketFrom(message));
 		}
 	}
 	
@@ -34,7 +36,7 @@ public final class NetworkHelper
 	 */
 	public static void sendToAllTracking(SimpleNetworkWrapper wrapper, TileEntity tileEntity, IMessage message)
 	{
-		if(tileEntity.getWorldObj() instanceof WorldServer)
+		if(tileEntity.getWorld() instanceof WorldServer)
 		{
 			//TODO ((WorldServer)tileEntity.getWorldObj()).getPlayerManager().sendToWatching(tileEntity.xCoord >> 4, tileEntity.zCoord >> 4, wrapper.getPacketFrom(message));
 		}
@@ -47,20 +49,13 @@ public final class NetworkHelper
 	{
 		if(nbt == null)
 		{
-			buf.writeInt(-1);
+			buf.writeInt(0);
 		}
 		else
 		{
-			try
-			{
-				byte[] bytes = CompressedStreamTools.compress(nbt);
-				buf.writeInt(bytes.length);
-				buf.writeBytes(bytes);
-			}
-			catch (IOException e)
-			{
-				Java.<RuntimeException>throwUnchecked(e);
-			}
+			byte[] bytes = compress(nbt);
+			buf.writeInt(bytes.length);
+			buf.writeBytes(bytes);
 		}
 	}
 	
@@ -78,14 +73,34 @@ public final class NetworkHelper
 		{
 			byte[] bytes = new byte[length];
             buf.readBytes(bytes);
-            try
-            {
-				return CompressedStreamTools.func_152457_a(bytes, new NBTSizeTracker(2097152L)); //Cap of 2MB?
-			}
-            catch (IOException e)
-            {
-				throw Java.<RuntimeException>throwUnchecked(e); //impossible.
-			}
+            return decompress(bytes, new NBTSizeTracker(2097152L)); //Cap of 2MB?
+		}
+	}
+	
+	public static byte[] compress(NBTTagCompound compound)
+	{
+		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+		
+		try(DataOutputStream dataOut = new DataOutputStream(new GZIPOutputStream(byteStream));)
+		{
+			CompressedStreamTools.write(compound, dataOut);
+			return byteStream.toByteArray();
+		}
+		catch(IOException e)
+		{
+			throw Java.<RuntimeException>throwUnchecked(e);
+		}
+	}
+	
+	public static NBTTagCompound decompress(byte[] bytes, NBTSizeTracker size)
+	{
+		try(DataInputStream dataIn = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new ByteArrayInputStream(bytes)))))
+		{
+			return CompressedStreamTools.func_152456_a(dataIn, size);
+		}
+		catch (IOException e)
+		{
+			throw Java.<RuntimeException>throwUnchecked(e);
 		}
 	}
 }

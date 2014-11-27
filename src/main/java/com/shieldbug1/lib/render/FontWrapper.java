@@ -31,7 +31,7 @@ public final class FontWrapper
 		}
 		else
 		{
-			this.fontRenderer.drawString(string, x, y, colour, shadow);
+			this.fontRenderer.func_175065_a(string, x, y, colour, shadow);
 		}
 	}
 	
@@ -50,7 +50,7 @@ public final class FontWrapper
 	
 	public static FontWrapper getDefault()
 	{
-		return new FontWrapper(Minecraft.getMinecraft().fontRenderer);
+		return new FontWrapper(Minecraft.getMinecraft().fontRendererObj);
 	}
 	
 	public static FontWrapper wrap(FontRenderer fontRenderer)

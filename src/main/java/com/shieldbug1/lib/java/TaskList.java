@@ -110,6 +110,8 @@ public class TaskList<T>
 		}
 	}
 	
+	
+	
 	private void refreshList()
 	{
 		this.list = this.supplier.get();
