@@ -12,4 +12,6 @@ public class ASMTypes
 	public static final Type BLOCK_TYPE = Type.getType("Lnet/minecraft/block/Block;");
 	public static final Type ITEMSTACK_STYPE = Type.getType("Lnet/minecraft/item/ItemStack;");
 	public static final Type ENTITYPLAYER_TYPE = Type.getType("Lnet/minecraft/entity/player/EntityPlayer;");
+	public static final Type BLOCK_POS_TYPE = Type.getType("Lnet/minecraft/util/BlockPos;");
+	public static final Type IBLOCK_STATE_TYPE = Type.getType("Lnet/minecraft/block/state/IBlockState;");
 }
