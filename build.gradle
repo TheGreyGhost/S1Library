@@ -43,6 +43,30 @@ minecraft {
     version = "${config.minecraft_version}-${config.forge_version}"
 }
 
+jar {
+	manifest {
+	
+	}
+}
+
+task deobfJar(type: Jar) {
+	from sourceSets.main.output
+	classifier = 'deobf'
+}
+
+task sourceJar(type: Jar) {
+	from sourceSets.main.allSource
+	classifier = 'sources'
+}
+
+tasks.build.dependsOn('sourceJar', 'deobfJar')
+
+artifacts {
+	archives deobfJar
+	archives sourceJar
+	archives jar
+}
+
 dependencies {
 	//compile 'group:name:version'
 }

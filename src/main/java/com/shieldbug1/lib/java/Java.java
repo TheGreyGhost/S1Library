@@ -1,5 +1,7 @@
 package com.shieldbug1.lib.java;
 
+import sun.reflect.Reflection;
+
 
 
 public final class Java
@@ -32,4 +34,20 @@ public final class Java
 		return System.getProperty("java.version");
 	}
 	
+	/**
+	 * @return the class that called the class that called this method.
+	 */
+	public Class<?> getCallingClass()
+	{
+		return Reflection.getCallerClass(3);
+	}
+	
+	/**
+	 * @param index - how far back the calling class should be: 0 is the calling class, 1 is the calling class before it, etc.
+	 * @return the calling class according to the index.
+	 */
+	public Class<?> getCallingClass(int index)
+	{
+		return Reflection.getCallerClass(index + 3);
+	}
 }

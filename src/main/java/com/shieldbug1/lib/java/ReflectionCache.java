@@ -120,4 +120,9 @@ public final class ReflectionCache //TODO rewrite as soft-reference cache.
 			throw Java.<RuntimeException>throwUnchecked(e);
 		}
 	}
+	
+	public static Method findMethod(Class<?> clazz, String[] methodNames, Class<?>... parameterTypes)
+	{
+		return ReflectionHelper.findMethod((Class)clazz, null, methodNames, parameterTypes);//XXX Java 8 get rid of cast.
+	}
 }

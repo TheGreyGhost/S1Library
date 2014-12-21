@@ -1,7 +1,6 @@
 package com.shieldbug1.lib.network;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufOutputStream;
 
 import java.io.*;
 import java.util.zip.GZIPInputStream;
@@ -42,6 +41,11 @@ public final class NetworkHelper
 		}
 	}
 	
+	public static void a()
+	{
+		
+	}
+	
 	/**
 	 * Writes NBT data to ByteBuf instances, without casting to short (vanilla is noob)
 	 */
@@ -73,7 +77,7 @@ public final class NetworkHelper
 		{
 			byte[] bytes = new byte[length];
             buf.readBytes(bytes);
-            return decompress(bytes, new NBTSizeTracker(2097152L)); //Cap of 2MB?
+            return decompress(bytes, new NBTSizeTracker(1 << 21)); //Cap of 2MB? (2097152L)
 		}
 	}
 	

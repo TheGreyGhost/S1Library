@@ -10,7 +10,8 @@ import com.shieldbug1.lib.mods.api.ModBase;
  */
 public enum S1Mods implements IMod
 {
-	S1CORE("S1CORE");
+	S1CORE("S1CORE"),
+	RPGMOD("rpgmod");
 	
 	private final String modName;
 	private final boolean loaded;

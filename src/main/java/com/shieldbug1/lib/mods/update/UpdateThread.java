@@ -5,10 +5,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
-import net.minecraftforge.fml.common.FMLCommonHandler;
-
 import com.shieldbug1.lib.java.Java;
 import com.shieldbug1.lib.mods.api.ModBase;
+import com.shieldbug1.lib.util.Sides;
 
 /**
  * This class is instantiated and created automatically for all of my mods.
@@ -41,7 +40,7 @@ public final class UpdateThread extends Thread
 		{
 			if(this.mod.getSerialID() < scanner.nextInt())
 			{
-				this.mod.getUpdater().handleUpdateFound(FMLCommonHandler.instance().getSide());
+				this.mod.getUpdater().handleUpdateFound(Sides.environment());
 			}
 		}
 		catch (IOException e)

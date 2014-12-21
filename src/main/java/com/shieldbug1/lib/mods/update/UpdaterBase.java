@@ -1,15 +1,17 @@
 package com.shieldbug1.lib.mods.update;
 
+import static net.minecraft.event.ClickEvent.Action.OPEN_URL;
 import static org.apache.logging.log4j.Level.INFO;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.event.ClickEvent;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatStyle;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
+
+import com.shieldbug1.lib.util.ChatBuilder;
+import com.shieldbug1.lib.util.Sides;
 
 /**
  * Default implementation of {@link Updater}.
@@ -55,10 +57,11 @@ public class UpdaterBase implements Updater
 	@SubscribeEvent
 	public void onPlayerJoinWorld(EntityJoinWorldEvent event)
 	{
-		if(event.entity instanceof EntityPlayer && event.world.isRemote && this.foundUpdateClient) //client
+		if(event.entity instanceof EntityPlayer && Sides.logicalClient(event.entity) && this.foundUpdateClient) //client
 		{
-			((EntityPlayer)event.entity).addChatComponentMessage(new ChatComponentText("An update for " + this.modName +" has been found. You can find the latest version by clicking here.")
-			.setChatStyle(new ChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, this.modURL))));
+			((EntityPlayer)event.entity).addChatComponentMessage(new ChatBuilder()
+			.setText("An update for " + this.modName +" has been found. You can find the latest version by clicking here.")
+			.setChatClickEvent(new ClickEvent(OPEN_URL, this.modURL)).build());
 			this.foundUpdateClient = false;
 			MinecraftForge.EVENT_BUS.unregister(this);
 		}

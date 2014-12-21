@@ -7,7 +7,6 @@ import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 

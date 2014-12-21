@@ -15,7 +15,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import com.google.common.collect.Lists;
-import com.shieldbug1.lib.math.MathUtils;
+import com.shieldbug1.lib.util.Sides;
 
 public final class EntityHelper
 {
@@ -89,7 +89,7 @@ public final class EntityHelper
 		if(entity instanceof EntityPlayerMP)
 		{
 			EntityPlayerMP player = (EntityPlayerMP) entity;
-			if(!player.worldObj.isRemote) //Server
+			if(Sides.logicalServer(player)) //Server
 			{
 				player.worldObj.theProfiler.startSection("changeDimension");
 				ServerConfigurationManager config = player.mcServer.getConfigurationManager();
