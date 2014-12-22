@@ -2,7 +2,10 @@ package com.shieldbug1.lib.asm;
 
 import org.objectweb.asm.Type;
 
-public class ASMTypes
+/**
+ * A class that contains commonly used ASMTypes.
+ */
+public final class ASMTypes
 {
 	private ASMTypes(){}
 	

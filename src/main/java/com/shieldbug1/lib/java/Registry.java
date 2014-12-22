@@ -3,7 +3,11 @@ package com.shieldbug1.lib.java;
 import java.util.*;
 
 import com.google.common.collect.ImmutableMap;
-
+/**
+ * A wrapper class around a Map that allows it to be locked.
+ * @param <K> Key
+ * @param <V> Value
+ */
 public class Registry<K, V> implements Map<K, V>
 {
 	private Map<K, V> delegate;

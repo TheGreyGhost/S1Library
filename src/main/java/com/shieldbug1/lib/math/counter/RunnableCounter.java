@@ -2,6 +2,10 @@ package com.shieldbug1.lib.math.counter;
 
 import static com.shieldbug1.lib.util.CoreFunctions.checkArgument;
 
+/**
+ * An implementation of {@link Counter} that executes a Runnable every time its parent {@link Counter} 
+ * returns true on {@link Counter#tick()}.
+ */
 public class RunnableCounter implements Counter
 {
 	private final Counter parent;

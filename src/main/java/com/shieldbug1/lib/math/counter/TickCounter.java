@@ -2,6 +2,10 @@ package com.shieldbug1.lib.math.counter;
 
 import static com.shieldbug1.lib.util.CoreFunctions.checkArgument;
 
+/**
+ * An implementation of {@link Counter} that counts to a certain maximum and then resets.
+ * Alternatively, it can count up forever.
+ */
 public class TickCounter implements Counter
 {
 	/** How often this counter should 'tick' (when should it reset). Ticking goes from 0 to this, exclusive. */

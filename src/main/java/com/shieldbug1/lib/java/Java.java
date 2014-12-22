@@ -2,8 +2,6 @@ package com.shieldbug1.lib.java;
 
 import sun.reflect.Reflection;
 
-
-
 public final class Java
 {
 	private Java(){}

@@ -1,8 +1,10 @@
 package com.shieldbug1.lib.math;
 
 import java.util.Random;
-
-public final class MathUtils
+/**
+ * A Utility class for common mathematical operations.
+ */
+public final class MathUtils //TODO finish javadoc
 {
 	private MathUtils(){}
 	/**
@@ -36,16 +38,25 @@ public final class MathUtils
 		return random.nextDouble() < (chance / 100D);
 	}
 	
+	/**
+	 * @return the value of a to be between the values of max and min, inclusive.
+	 */
 	public static int clamp(int a, int min, int max)
 	{
 		return a < min ? min : a > max ? max : a;
 	}
 	
+	/**
+	 * @return the value of a to be between the values of max and min, inclusive.
+	 */
 	public static float clamp(float a, float min, float max)
 	{
 		return a < min ? min : a > max ? max : a;
 	}
 	
+	/**
+	 * @return the value of a to be between the values of max and min, inclusive.
+	 */
 	public static double clamp(double a, double min, double max)
 	{
 		return a < min ? min : a > max ? max : a;
@@ -66,17 +77,27 @@ public final class MathUtils
 		return a + (b - a) * d;
 	}
 	
+	/**
+	 * Rounds the double down to nearest integer.
+	 * @return the rounded integer.
+	 */
 	public static int floor(double d)
 	{
 		int i = (int) d;
 		return i > d ? (i - 1) : i;
 	}
 	
+	/**
+	 * @return the smallest of the two integers.
+	 */
 	public static int min(int a, int b)
 	{
 		return a < b ? a : b;
 	}
 	
+	/**
+	 * @return the largest of the two integers.
+	 */
 	public static int max(int a, int b)
 	{
 		return a > b ? a : b;

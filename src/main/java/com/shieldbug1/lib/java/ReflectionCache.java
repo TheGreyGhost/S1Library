@@ -108,6 +108,13 @@ public final class ReflectionCache //TODO rewrite as soft-reference cache.
 		}
 	}
 	
+	/**
+	 * Convenience method to get rid of ugly try-catch statements.
+	 * @param instance - the instance to invoke the method on.
+	 * @param method - the method to invoke.
+	 * @param args - all the methods arguments.
+	 * @return whatever the method returned.
+	 */
 	public static <T> T invokeUnchecked(Object instance, Method method, Object... args)
 	{
 		try
@@ -121,6 +128,9 @@ public final class ReflectionCache //TODO rewrite as soft-reference cache.
 		}
 	}
 	
+	/**
+	 * Because {@link ReflectionHelper#findMethod(Class, Object, String[], Class...)} takes in an instance value for no reason.
+	 */
 	public static Method findMethod(Class<?> clazz, String[] methodNames, Class<?>... parameterTypes)
 	{
 		return ReflectionHelper.findMethod((Class)clazz, null, methodNames, parameterTypes);//XXX Java 8 get rid of cast.

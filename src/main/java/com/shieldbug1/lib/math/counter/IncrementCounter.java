@@ -2,6 +2,11 @@ package com.shieldbug1.lib.math.counter;
 
 import static com.shieldbug1.lib.util.CoreFunctions.checkArgument;
 
+/**
+ * Similar to the {@link TickCounter}, this counter increases it's tick every count, and can also count to infinity.
+ * This implementation however allows to use different increment values (raise the counter by an amount other than
+ * one).
+ */
 public class IncrementCounter implements Counter
 {
 	private final int increment;

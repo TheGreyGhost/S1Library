@@ -9,7 +9,7 @@ import com.google.common.base.Supplier;
  * This class is a wrapper around the {@link SoftReference<T>} class.
  * The {@link #get()} method, will never return null, unless the supplier returns null.
  */
-public final class SoftReferenceWrapper<T>
+public final class SoftReferenceWrapper<T> //TODO Javadoc.
 {
 	private SoftReference<T> reference;
 	private final Supplier<? extends T> supplier;

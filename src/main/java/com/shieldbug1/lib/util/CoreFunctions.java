@@ -128,4 +128,9 @@ public final class CoreFunctions
 			return reference;
 		}
 	}
+	
+	public static <T> T checkNotNull(T reference, String message)
+	{
+		return checkArgument(reference != null, reference, message);
+	}
 }

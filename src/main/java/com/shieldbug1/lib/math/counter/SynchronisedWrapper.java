@@ -2,6 +2,9 @@ package com.shieldbug1.lib.math.counter;
 
 import static com.shieldbug1.lib.util.CoreFunctions.checkArgument;
 
+/**
+ * A synchronised implementation of {@link Counter} that wraps around another implementation.
+ */
 public class SynchronisedWrapper implements Counter
 {
 	private final Counter parent;
