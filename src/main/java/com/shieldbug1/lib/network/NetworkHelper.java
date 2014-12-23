@@ -15,12 +15,18 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 import com.shieldbug1.lib.java.Java;
 
+/**
+ * A utility class for Network related methods.
+ */
 public final class NetworkHelper
 {
 	private NetworkHelper(){}
 	
 	/**
 	 * Sends the message all players tracking the entity.
+	 * @param wrapper - the SimpleNetworkWrapper to send from.
+	 * @param entity - the entity to find all trackers for.
+	 * @param message - the message to send to all trackers.
 	 */
 	public static void sendToAllTracking(SimpleNetworkWrapper wrapper, Entity entity, IMessage message)
 	{
@@ -32,18 +38,19 @@ public final class NetworkHelper
 	
 	/**
 	 * Sends the message to all players tracking the TileEntity.
+	 * @param wrapper - the SimpleNetworkWrapper to send from.
+	 * @param tileEntity - the tileEntity to find all trackers for.
+	 * @param message - the message to send to all trackers.
+	 * 
+	 * @deprecated Currently does nothing, pending pull request on MinecraftForge github.
 	 */
+	@Deprecated
 	public static void sendToAllTracking(SimpleNetworkWrapper wrapper, TileEntity tileEntity, IMessage message)
 	{
 		if(tileEntity.getWorld() instanceof WorldServer)
 		{
 			//TODO ((WorldServer)tileEntity.getWorldObj()).getPlayerManager().sendToWatching(tileEntity.xCoord >> 4, tileEntity.zCoord >> 4, wrapper.getPacketFrom(message));
 		}
-	}
-	
-	public static void a()
-	{
-		
 	}
 	
 	/**
@@ -81,6 +88,12 @@ public final class NetworkHelper
 		}
 	}
 	
+	/**
+	 * Compresses a NBTTagCompound to a byte array.
+	 * To be decompressed again later using {@link #decompress(byte[], NBTSizeTracker)}.
+	 * @param compound - the compound to compress.
+	 * @return the compressed byte array.
+	 */
 	public static byte[] compress(NBTTagCompound compound)
 	{
 		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
@@ -96,6 +109,13 @@ public final class NetworkHelper
 		}
 	}
 	
+	/**
+	 * Decompresses a byte array into an NBTTagCompound.
+	 * Compression must've been done through {@link #compress(NBTTagCompound)}.
+	 * @param bytes - the byte array to decompress.
+	 * @param size - the maximum size of data? TODO figure this one out.
+	 * @return the decompressed NBTTagCompound.
+	 */
 	public static NBTTagCompound decompress(byte[] bytes, NBTSizeTracker size)
 	{
 		try(DataInputStream dataIn = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new ByteArrayInputStream(bytes)))))

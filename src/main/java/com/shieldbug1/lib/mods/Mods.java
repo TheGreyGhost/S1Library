@@ -4,6 +4,9 @@ import net.minecraftforge.fml.common.*;
 
 import com.shieldbug1.lib.mods.api.IMod;
 
+/**
+ * A wrapper around the ModContainer wrapper.
+ */
 public enum Mods implements IMod
 {
 	NEI("NotEnoughItems"),

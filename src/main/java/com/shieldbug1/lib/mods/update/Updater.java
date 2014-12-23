@@ -9,6 +9,7 @@ public interface Updater
 {
 	/** @return the url where update information can be found. */
 	public abstract String getUpdateURL();
+	
 	/** Handle updating here.*/
 	public abstract void handleUpdateFound(Side side);
 }

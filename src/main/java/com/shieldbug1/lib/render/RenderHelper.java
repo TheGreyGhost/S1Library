@@ -9,26 +9,49 @@ import net.minecraft.client.renderer.*;
 import com.shieldbug1.lib.java.ReflectionCache;
 import com.shieldbug1.lib.repackage.speedytools.common.utilities.OpenGLdebugging;
 
+/**
+ * A class created to help with rendering simple things on screen.
+ */
 public final class RenderHelper
 {
 	private RenderHelper(){}
 	
+	/**
+	 * Print a bunch of OpenGL related information to the console.
+	 */
 	public static void dumpGLInformation()
 	{
 		OpenGLdebugging.dumpAllIsEnabled();
 	}
 	
+	/**
+	 * Draws a coloured rectangle.
+	 * @param x - xPos to start drawing
+	 * @param y - yPos to start drawing
+	 * @param width - width of rectangle
+	 * @param height - height of rectangle 
+	 * @param colour - colour of rectangle (0xRRGGBB)
+	 */
 	public static void drawQuad(int x, int y, int width, int height, int colour)
 	{
 		drawQuad(x, y, width, height, colour, 0xFF, getGuiZLevel());
 	}
 
+	/**
+	 * Draws a coloured rectangle with alpha.
+	 * @param x - xPos to start drawing.
+	 * @param y - yPos to start drawing.
+	 * @param width - width of rectangle.
+	 * @param height - height of rectangle.
+	 * @param colour - colour of rectangle (0xRRGGBB)
+	 * @param alpha - alpha level of colour
+	 */
 	public static void drawQuad(int x, int y, int width, int height, int colour, int alpha)
 	{
 		drawQuad(x, y, width, height, colour, alpha, getGuiZLevel());
 	}
-
-	public static void drawQuad(int x, int y, int width, int height, int colour, int alpha, float zLevel)
+	
+	private static void drawQuad(int x, int y, int width, int height, int colour, int alpha, float zLevel)
 	{
 		if(alpha == 0) //Alpha is 0, we don't need to draw anything.
 		{
@@ -41,7 +64,7 @@ public final class RenderHelper
 
 		glDisable(GL_TEXTURE_2D); //We're not drawing an image, we're drawing a colour.
 
-		if (alpha != 255)
+		if(alpha != 255)
 		{
 			enableBlend(); //glEnable(GL_BLEND);
 			blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -66,23 +89,42 @@ public final class RenderHelper
 		}
 	}
 
+	/**
+	 * Draws a textured square.
+	 * @param x - xPos to start drawing.
+	 * @param y - yPos to start drawing.
+	 * @param width - width to draw.
+	 * @param height - height to draw.
+	 * @param u - starting u value of texture.
+	 * @param v - starting v value of texture.
+	 * @param uSize - size of u value of texture.
+	 * @param vSize - size of v vale of texture.
+	 * @param texSize - the pixel size of the length of one of the sides of the texture.
+	 */
 	public static void drawTexturedSquare(int x, int y, int width, int height, int u, int v, int uSize, int vSize, int texSize)
 	{
 		drawTexturedQuad(x, y, width, height, u, v, uSize, vSize, texSize, texSize, getGuiZLevel());
 	}
 	
-	public static void drawTexturedSquare(int x, int y, int width, int height, int u, int v, int uSize, int vSize, int texSize, float zLevel)
-	{
-		drawTexturedQuad(x, y, width, height, u, v, uSize, vSize, texSize, texSize, zLevel);
-	}
-
-
+	/**
+	 * Draws a textured square.
+	 * @param x - xPos to start drawing.
+	 * @param y - yPos to start drawing.
+	 * @param width - width to draw.
+	 * @param height - height to draw.
+	 * @param u - starting u value of texture.
+	 * @param v - starting v value of texture.
+	 * @param uSize - size of u value of texture.
+	 * @param vSize - size of v vale of texture.
+	 * @param texWidth - the width of the texture.
+	 * @param texHeight - the height of the texture.
+	 */
 	public static void drawTexturedQuad(int x, int y, int width, int height, int u, int v, int uSize, int vSize, int texWidth, int texHeight)
 	{
 		drawTexturedQuad(x, y, width, height, u, v, uSize, vSize, texWidth, texHeight, getGuiZLevel());
 	}
 
-	public static void drawTexturedQuad(int x, int y, int width, int height, int u, int v, int uSize, int vSize, int texWidth, int texHeight, float zLevel)
+	private static void drawTexturedQuad(int x, int y, int width, int height, int u, int v, int uSize, int vSize, int texWidth, int texHeight, float zLevel)
 	{
 		float uFact = 1f / texWidth;
 		float vFact = 1f / texHeight;
@@ -102,12 +144,19 @@ public final class RenderHelper
 		t.draw();
 	}
 
+	/**
+	 * Draws a textured quad onto screen, and fits the entire texture onto the quadd.
+	 * @param x - xPos to start drawing.
+	 * @param y - yPos to start drawing.
+	 * @param width - width of quad to draw.
+	 * @param height - height of quad to draw.
+	 */
 	public static void drawTexturedQuadFit(int x, int y, int width, int height)
 	{
 		drawTexturedQuadFit(x, y, width, height, getGuiZLevel());
 	}
 
-	public static void drawTexturedQuadFit(int x, int y, int width, int height, float zLevel)
+	private static void drawTexturedQuadFit(int x, int y, int width, int height, float zLevel)
 	{
 		Tessellator t = Tessellator.getInstance();
 		WorldRenderer render = t.getWorldRenderer();

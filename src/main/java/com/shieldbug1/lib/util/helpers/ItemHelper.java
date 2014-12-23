@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 
-public final class ItemHelper
+public final class ItemHelper //TODO JavaDoc
 {
 	private ItemHelper(){}
 	

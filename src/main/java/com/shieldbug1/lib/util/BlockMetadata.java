@@ -5,7 +5,10 @@ import static com.shieldbug1.lib.util.CoreFunctions.checkArgument;
 /**
  * A bit manipulation class specific to block metadata.
  * It can be used both when setting metadata, and when reading metadata.
+ * 
+ * @deprecated use the new BlockStates stuff (damn it, 1.8).
  */
+@Deprecated
 public class BlockMetadata
 {
 	private int meta;

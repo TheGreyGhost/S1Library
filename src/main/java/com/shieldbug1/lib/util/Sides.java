@@ -27,7 +27,7 @@ public final class Sides
 		return logical() == Side.SERVER;
 	}
 	
-	public static boolean actualServer()
+	public static boolean environmentServer()
 	{
 		return environment() == Side.SERVER;
 	}
@@ -37,7 +37,7 @@ public final class Sides
 		return logical() == Side.CLIENT;
 	}
 	
-	public static boolean actualClient()
+	public static boolean environmentClient()
 	{
 		return environment() == Side.CLIENT;
 	}

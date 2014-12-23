@@ -21,8 +21,8 @@ public final class ClientUtils
 	/**
 	 * Schedules a runnable which will be attempted to run at the beginning of the next client tick.
 	 */
-	public static void callFromMainThread(Runnable runnable)
+	public static ListenableFuture<Void> callFromMainThread(Runnable runnable)
 	{
-		Minecraft.getMinecraft().addScheduledTask(runnable);
+		return Minecraft.getMinecraft().addScheduledTask(runnable);
 	}
 }
