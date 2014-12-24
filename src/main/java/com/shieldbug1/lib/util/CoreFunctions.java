@@ -3,7 +3,6 @@ package com.shieldbug1.lib.util;
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 
-
 /**
  * This class contains some Function wrapper methods, as well as a few methods that can be used as functions.
  * It is a miscellaneous collection of methods and functions.
@@ -105,7 +104,7 @@ public final class CoreFunctions
 		}
 	}
 	
-	public static <T> T checkArgument(boolean condition, T reference, String message)
+	public static <T> T checkArgument(boolean condition, T reference, String message) //TODO javadoc
 	{
 		if(!condition)
 		{
@@ -117,7 +116,7 @@ public final class CoreFunctions
 		}
 	}
 	
-	public static <T> T checkState(boolean state, T reference, String message)
+	public static <T> T checkState(boolean state, T reference, String message) //TODO javadoc
 	{
 		if(!state)
 		{
@@ -129,7 +128,7 @@ public final class CoreFunctions
 		}
 	}
 	
-	public static <T> T checkNotNull(T reference, String message)
+	public static <T> T checkNotNull(T reference, String message) //TODO javadoc
 	{
 		return checkArgument(reference != null, reference, message);
 	}

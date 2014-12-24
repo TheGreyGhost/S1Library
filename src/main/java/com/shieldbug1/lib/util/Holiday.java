@@ -2,7 +2,7 @@ package com.shieldbug1.lib.util;
 
 //import java.time.*;
 
-public enum Holiday //TODO either fix this class to work with Java 7, or wait for Java 8 support.
+public enum Holiday //XXX Waiting for Java 8 support. ETA is 1 year+, but one class that does nothing is alright. I might downgrade this to use Java 7 eventually.
 {
 	/*NEW_YEARS_DAY(Month.JANUARY, 1, 2),
 	VALENTINES(Month.FEBRUARY, 13, 14, 15),

@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
-public final class ClientUtils
+public final class ClientUtils//TODO Javadoc
 {
 	private ClientUtils(){}
 	

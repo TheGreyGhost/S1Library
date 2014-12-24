@@ -6,7 +6,7 @@ import net.minecraft.util.*;
 
 import org.apache.commons.lang3.builder.Builder;
 
-public class ChatBuilder implements Builder<ChatComponentText>
+public class ChatBuilder implements Builder<ChatComponentText> //TODO javadoc
 {
 	private ChatComponentText component;
 	private ChatStyle style;

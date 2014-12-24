@@ -231,7 +231,9 @@ public final class ItemHelper //TODO JavaDoc
 		}
 			};
 	
-	
+	/**
+	 * @return true if neither ItemStacks are null and both contain the same Item.
+	 */
 	public static boolean areItemsEqual(ItemStack stack1, ItemStack stack2)
 	{
 		if(stack1 == null || stack2 == null) //Is one null?
@@ -242,26 +244,46 @@ public final class ItemHelper //TODO JavaDoc
 		return stack1.getItem() == stack1.getItem();
 	}
 	
+	/**
+	 * Checks the ItemStack's Items and metadata for equality. If the first stack's metadata is equal to
+	 * {@link OreDictionary#WILDCARD_VALUE}, metadata check always returns true.
+	 * @return true if both ItemStacks have equal Items and metadata.
+	 */
 	public static boolean areItemsEqualWithMetadata(ItemStack stack1, ItemStack stack2)
 	{
-		return areItemsEqual(stack1, stack2) && stack1.getItemDamage() == stack2.getItemDamage() || stack1.getItemDamage() == OreDictionary.WILDCARD_VALUE;
+		return areItemsEqual(stack1, stack2) && stack1.getItemDamage() == OreDictionary.WILDCARD_VALUE || stack1.getItemDamage() == stack2.getItemDamage();
 	}
 	
+	/**
+	 * Checks whether two ItemStack's Items and NBT is equal.
+	 * @return true if both ItemStacks have equal Items and NBTTagCompounds.
+	 */
 	public static boolean areItemsEqualWithNBT(ItemStack stack1, ItemStack stack2)
 	{
 		return areItemsEqual(stack1, stack2) && isNBTEqual(stack1.getTagCompound(), stack2.getTagCompound());
 	}
 	
+	/**
+	 * @return true if both NBTTagCompouns are equal, or both are null.
+	 */
 	public static boolean isNBTEqual(NBTTagCompound compound1, NBTTagCompound compound2)
 	{
 		return compound1 != null ? compound1.equals(compound2) : compound2 == null;
 	}
 	
+	/**
+	 * @return true if both ItemStacks Items, NBT and metadata are equal.
+	 */
 	public static boolean areItemsEqualWithMetadataAndNBT(ItemStack stack1, ItemStack stack2)
 	{
 		return areItemsEqualWithMetadata(stack1, stack2) && isNBTEqual(stack1.getTagCompound(), stack2.getTagCompound());
 	}
 	
+	/**
+	 * Retrieves a Comparator of ItemStacks depending on the sort level.
+	 * @param level - how much the Comparator should sort.
+	 * @return the comparator for the sorting level.
+	 */
 	public static Comparator<ItemStack> getComparator(SortLevel level)
 	{
 		switch(level)
@@ -281,7 +303,14 @@ public final class ItemHelper //TODO JavaDoc
 	
 	public static enum SortLevel
 	{
-		ITEM, DAMAGE_WILDCARD, DAMAGE, NBT;
+		/** Sorts by items. */
+		ITEM,
+		/** Sorts by items, and damage. {@link OreDictionary#WILDCARD_VALUE} is allowed.*/
+		DAMAGE_WILDCARD,
+		/** Sorts by items and damage. {@link OreDictionary#WILDCARD_VALUE} does not affect sorting. */
+		DAMAGE,
+		/** Sorts by items, damage, and NBT. {@link OreDictionary#WILDCARD_VALUE} does not affect sorting.*/
+		NBT;
 	}
 	
 }

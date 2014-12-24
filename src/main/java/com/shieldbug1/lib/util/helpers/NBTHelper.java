@@ -5,6 +5,9 @@ import java.util.UUID;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+/**
+ * A class to help with using the Named Binary Tag (NBT) classes.
+ */
 public final class NBTHelper
 {
 	private NBTHelper(){}

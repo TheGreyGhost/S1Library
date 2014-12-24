@@ -6,8 +6,6 @@ import static org.objectweb.asm.ClassWriter.COMPUTE_FRAMES;
 import static org.objectweb.asm.Opcodes.*;
 import static org.objectweb.asm.Type.VOID_TYPE;
 
-
-
 import java.util.Iterator;
 
 import net.minecraftforge.fml.common.FMLLog;
@@ -245,6 +243,19 @@ public class ASMHelper
 	}
 	
 	/**
+	 * Finds a no-arg MethodNode in a ClassNode.
+	 * @param clazz - the ClassNode to find the method in.
+	 * @param obf - the obfuscated name of the method
+	 * @param deobf - the deobfuscated name of the method
+	 * @param returnType - the return type of the method.
+	 * @return the MethodNode that matches the input, or null if none was found.
+	 */
+	public static MethodNode findMethod(ClassNode clazz, String obf, String deobf, Type returnType)
+	{
+		return findMethod(clazz, obf, deobf, returnType, new Type[0]);
+	}
+	
+	/**
 	 * Finds a MethodNode in a ClassNode. Use this version if the method doesn't have two names (obf and deobf). 
 	 * @param clazz - the ClassNode to find the method in.
 	 * @param name - the name of the method.
@@ -266,6 +277,19 @@ public class ASMHelper
 	}
 	
 	/**
+	 * Finds a no-arg MethodNode in a ClassNode.
+	 * Use this version if the method doesn't have two names (obf and deobf). 
+	 * @param clazz - the ClassNode to find the method in.
+	 * @param name - the name of the method.
+	 * @param returnType - the return type of the method.
+	 * @return the MethodNode that matches the input, or null if none was found.
+	 */
+	public static MethodNode findMethod(ClassNode clazz, String name, Type returnType)
+	{
+		return findMethod(clazz, name, returnType, new Type[0]);
+	}
+	
+	/**
 	 * Finds a constructor MethodNode in a ClassNode.
 	 * @param clazz - the ClassNode to find the constructor in.
 	 * @param argumentTypes - the argument types. If none, use an empty Type array.
@@ -274,6 +298,16 @@ public class ASMHelper
 	public static MethodNode findConstructor(ClassNode clazz, Type... argumentTypes)
 	{
 		return findMethod(clazz, "<init>", VOID_TYPE, argumentTypes);
+	}
+	
+	/**
+	 * Finds a no-arg constructor MethodNode in a ClassNode.
+	 * @param clazz - the ClassNode to find the constructor in.
+	 * @return the constructor MethodNode that matches the input, or null if none as found.
+	 */
+	public static MethodNode findConstructor(ClassNode clazz)
+	{
+		return findConstructor(clazz, new Type[0]);
 	}
 	
 	/**
@@ -319,11 +353,11 @@ public class ASMHelper
 	
 	/**
 	 * Prints out all instructions of a method to {@code System.out}.
-	 * @param method - the method who's instructions should be printed out.
+	 * @param instructions - the instructions that should be printed out.
 	 */
-	public static void printOpcodes(MethodNode method)
+	public static void printOpcodes(InsnList instructions)
 	{
-		Iterator<AbstractInsnNode> it = method.instructions.iterator();
+		Iterator<AbstractInsnNode> it = instructions.iterator();
 		while(it.hasNext())
 		{
 			AbstractInsnNode node = it.next();
