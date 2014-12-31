@@ -1,5 +1,7 @@
 package com.shieldbug1.lib.util.helpers;
 
+import static com.shieldbug1.lib.util.helpers.NBTHelper.DataType.LONG;
+
 import java.util.UUID;
 
 import net.minecraft.item.ItemStack;
@@ -227,8 +229,8 @@ public final class NBTHelper
 	public static NBTTagCompound getTagFromUUID(UUID uuid)
 	{
 		NBTTagCompound compound = new NBTTagCompound();
-		compound.setLong("mSigBits", uuid.getMostSignificantBits());
-		compound.setLong("lSigBits", uuid.getLeastSignificantBits());
+		set(LONG, compound, "mSigBits", uuid.getMostSignificantBits());
+		set(LONG, compound, "lSigBits", uuid.getLeastSignificantBits());
 		return compound;
 	}
 	
@@ -238,7 +240,7 @@ public final class NBTHelper
 	 */
 	public static UUID getUUIDFromTag(NBTTagCompound compound)
 	{
-		return new UUID(compound.getLong("mSigBits"), compound.getLong("lSigBits"));
+		return new UUID(get(LONG, compound, "mSigBits"), get(LONG, compound, "lSigBits"));
 	}
 	
 	/**
