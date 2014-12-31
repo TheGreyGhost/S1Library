@@ -1,15 +1,8 @@
 package com.shieldbug1.lib.render;
 
-import static com.shieldbug1.lib.render.GLState.ActivationState.DISABLED;
-import static com.shieldbug1.lib.render.GLState.ActivationState.ENABLED;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnable;
-
-import java.util.Collection;
-import java.util.Set;
-
-import com.google.common.base.Supplier;
-import com.google.common.collect.*;
+import static org.lwjgl.opengl.GL11.*;
+import gnu.trove.procedure.TIntProcedure;
+import gnu.trove.set.hash.TIntHashSet;
 
 /**
  * TODO this is a draft for usuage so I don't forget until I write the JavaDoc
@@ -37,19 +30,22 @@ import com.google.common.collect.*;
  */
 public class GLState //TODO javadoc
 {
-	private final Multimap<ActivationState, Integer> stateMap;
+	private static final TIntProcedure ENABLE = new TIntProcedure()
+	{
+		@Override	public boolean execute(int value)	{	glEnable(value);	return true;	}
+	}; //XXX Java 8, use method references
+	
+	private static final TIntProcedure DISABLE = new TIntProcedure()
+	{
+		@Override	public boolean execute(int value)	{	glDisable(value);	return true;	}
+	};//XXX Java 8, use method references
+	
+	
+	private final TIntHashSet ENABLED, DISABLED;
 	
 	public GLState()
 	{
-		this.stateMap = Multimaps.newSetMultimap(Maps.<ActivationState, Collection<Integer>>newEnumMap(ActivationState.class),
-				new Supplier<Set<Integer>>()
-				{
-			@Override
-			public Set<Integer> get()
-			{
-				return Sets.newIdentityHashSet();
-			}} //XXX java 8 use method reference + kill stupid non-implicit typing (because Set<Integer> isn't Collection<Integer> ????????????
-		);
+		this.ENABLED = this.DISABLED = new TIntHashSet();
 	}
 	
 	/**
@@ -59,10 +55,7 @@ public class GLState //TODO javadoc
 	 */
 	public GLState enabled(int... states)
 	{
-		for(int state : states)
-		{
-			this.stateMap.put(ENABLED, state);
-		}
+		this.ENABLED.addAll(states);
 		return this;
 	}
 	
@@ -73,57 +66,25 @@ public class GLState //TODO javadoc
 	 */
 	public GLState disabled(int... states)
 	{
-		for(int state : states)
-		{
-			this.stateMap.put(DISABLED, state);
-		}
+		this.DISABLED.addAll(states);
 		return this;
 	}
 	
+	/**
+	 * Enables the state. Call before rendering.
+	 */
 	public void enableState()
 	{
-		for(ActivationState activationState : ActivationState.values())
-		{
-			for(int state : this.stateMap.get(activationState))
-			{
-				activationState.apply(state);
-			}
-		}
+		this.ENABLED.forEach(ENABLE);//XXX Java 8
+		this.DISABLED.forEach(DISABLE);//XXX Java 8
 	}
 	
+	/**
+	 * Disables the state. Call after rendering.
+	 */
 	public void disableState()
 	{
-		for(ActivationState activationState : ActivationState.values())
-		{
-			for(int state : this.stateMap.get(activationState))
-			{
-				activationState.unapply(state);
-			}
-		}
-	}
-	
-	
-	
-	public static enum ActivationState //XXX Java 8 method references over abstract implementation
-	{
-		ENABLED
-		{
-			@Override
-			public void apply(int state)	{	glEnable(state);	}
-			
-			@Override
-			public void unapply(int state)	{	glDisable(state);	}
-		},
-		DISABLED
-		{
-			@Override
-			public void apply(int state)	{	glDisable(state);	}
-			
-			@Override
-			public void unapply(int state)	{	glEnable(state);	}
-		};
-		
-		public abstract void apply(int state);
-		public abstract void unapply(int state);
+		this.ENABLED.forEach(DISABLE);//XXX Java 8
+		this.DISABLED.forEach(ENABLE);//XXX Java 8
 	}
 }
