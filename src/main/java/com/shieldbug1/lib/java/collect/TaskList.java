@@ -1,4 +1,4 @@
-package com.shieldbug1.lib.java;
+package com.shieldbug1.lib.java.collect;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
