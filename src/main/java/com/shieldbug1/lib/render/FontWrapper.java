@@ -48,7 +48,7 @@ public final class FontWrapper //TODO Font styles.
 		}
 		else
 		{
-			this.fontRenderer.func_175065_a(string, x, y, colour, shadow);
+			this.fontRenderer.drawString(string, x, y, colour, shadow);
 		}
 	}
 	

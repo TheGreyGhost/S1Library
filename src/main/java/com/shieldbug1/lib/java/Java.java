@@ -1,5 +1,6 @@
 package com.shieldbug1.lib.java;
 
+import static com.shieldbug1.lib.java.Java.JavaVersion.*;
 import sun.reflect.Reflection;
 
 public final class Java
@@ -25,11 +26,18 @@ public final class Java
     }
 	
 	/**
-	 * @return the Java version.
+	 * A method that retrieves the current version of Java.
+	 * @return the version of Java that is being run right now.
 	 */
-	public static String getJavaVersion()
+	public static JavaVersion getJavaVersion()
 	{
-		return System.getProperty("java.version");
+		switch(System.getProperty("java.version").substring(0, 3))
+		{
+		case "1.6": return V1_6;
+		case "1.7": return V1_7;
+		case "1.8": return V1_8;
+		default: return UNKNOWN;
+		}
 	}
 	
 	/**
@@ -48,4 +56,6 @@ public final class Java
 	{
 		return Reflection.getCallerClass(index + 3);
 	}
+	
+	public static enum JavaVersion	{	V1_6, V1_7, V1_8, UNKNOWN;	}
 }

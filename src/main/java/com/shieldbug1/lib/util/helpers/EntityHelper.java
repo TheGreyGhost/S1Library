@@ -101,7 +101,7 @@ public final class EntityHelper
 				player.setLocationAndAngles(x, y, z, player.rotationYaw, player.rotationPitch);
 				newWorld.spawnEntityInWorld(player);
 				player.setWorld(newWorld);
-				config.func_72375_a(player, oldWorld);
+				config.preparePlayer(player, oldWorld);
 				player.playerNetServerHandler.setPlayerLocation(x, y, z, entity.rotationYaw, entity.rotationPitch);
 				player.theItemInWorldManager.setWorld(newWorld);
 				config.updateTimeAndWeatherForPlayer(player, newWorld);
@@ -145,6 +145,6 @@ public final class EntityHelper
 	 */
 	public static EnumFacing getEntityFaceDirection(EntityLivingBase entity)
 	{
-		return entity.func_174811_aO();
+		return entity.getHorizontalFacing();
 	}
 }

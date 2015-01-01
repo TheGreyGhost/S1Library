@@ -51,5 +51,4 @@ public enum S1Mods implements IMod
 	{
 		return this.modName;
 	}
-	
 }
