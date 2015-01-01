@@ -1,5 +1,7 @@
 package com.shieldbug1.lib.java;
 
+import static net.minecraftforge.fml.relauncher.ReflectionHelper.findField;
+
 import java.lang.reflect.*;
 import java.util.Map;
 
@@ -7,7 +9,6 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
-import com.google.common.base.Supplier;
 import com.google.common.collect.Maps;
 
 /**
@@ -18,8 +19,8 @@ public final class ReflectionCache //TODO rewrite as soft-reference cache.
 {
 	private ReflectionCache(){}
 	
-	private static final Map<ImmutablePair<Class<?>, String>, SoftReferenceWrapper<Field>> fieldMap = Maps.newHashMap();
-	private static final Map<String, SoftReferenceWrapper<Class<?>>> nameToClassMap = Maps.newHashMap();
+	private static final Map<ImmutablePair<Class<?>, String>, Field> fieldMap = Maps.newHashMap();
+	private static final Map<String, Class<?>> nameToClassMap = Maps.newHashMap();
 	
 	/**
 	 * Returns a field from the reflection cache, and places it in there if necessary.
@@ -31,20 +32,13 @@ public final class ReflectionCache //TODO rewrite as soft-reference cache.
 	public static Field getField(final Class<?> clazz, final String... fieldNames)
 	{
 		final ImmutablePair<Class<?>, String> key = ImmutablePair.<Class<?>, String>of(clazz, fieldNames[0]); //XXX Java 8 explicit typing.
-		SoftReferenceWrapper<Field> field = fieldMap.get(key);
+		Field field = fieldMap.get(key);
 		if(field == null)
 		{
-			field = new SoftReferenceWrapper<Field>(new Supplier<Field>()
-			{
-				@Override
-				public Field get()
-				{
-					return ReflectionHelper.findField(clazz, fieldNames);
-				}
-			}); //XXX JAVA 8
+			field =	findField(clazz, fieldNames);
 			fieldMap.put(key, field);
 		}
-		return field.get();
+		return field;
 	}
 	
 	/**
@@ -54,20 +48,13 @@ public final class ReflectionCache //TODO rewrite as soft-reference cache.
 	 */
 	public static Class<?> getClass(final String... classNames)
 	{
-		SoftReferenceWrapper<Class<?>> clazz = nameToClassMap.get(classNames[0]);
+		Class<?> clazz = nameToClassMap.get(classNames[0]);
 		if(clazz == null)
 		{
-			clazz = new SoftReferenceWrapper<Class<?>>(new Supplier<Class<?>>()
-					{
-						@Override
-						public Class<?> get()
-						{
-							return ReflectionHelper.getClass(null, classNames);
-						}
-					}); //XXX JAVA 8
+			clazz = ReflectionHelper.getClass(null, classNames);
 			nameToClassMap.put(classNames[0], clazz);
 		}
-		return clazz.get();
+		return clazz;
 	}
 	
 	/**
