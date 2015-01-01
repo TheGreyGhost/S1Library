@@ -7,6 +7,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import com.google.common.base.Equivalence;
+
 public final class ItemHelper //TODO JavaDoc
 {
 	private ItemHelper(){}
@@ -156,8 +160,7 @@ public final class ItemHelper //TODO JavaDoc
 			};
 	
 	private static final Comparator<ItemStack> NBT_COMPARATOR = new Comparator<ItemStack>() //XXX JAVA 8
-			{
-		
+	{
 		@Override
 		public int compare(ItemStack o1, ItemStack o2)
 		{
@@ -229,7 +232,27 @@ public final class ItemHelper //TODO JavaDoc
 				return 0; //Both null, same value!
 			}
 		}
-			};
+	};
+			
+	private static final Equivalence<ItemStack> ITEMSTACK_EQUIVALENCE = new Equivalence<ItemStack>()
+	{
+		@Override
+		protected boolean doEquivalent(ItemStack a, ItemStack b)
+		{
+			return a.isItemEqual(b) && a.stackSize == b.stackSize && ItemStack.areItemStackTagsEqual(a, b);
+		}
+
+		@Override
+		protected int doHash(ItemStack t)
+		{
+			return new HashCodeBuilder(27, 31)
+			.append(Item.getIdFromItem(t.getItem()))
+			.append(t.getMetadata())
+			.append(t.stackSize)
+			.append(t.getTagCompound())
+			.toHashCode();
+		}
+	};
 	
 	/**
 	 * @return true if neither ItemStacks are null and both contain the same Item.
@@ -301,6 +324,15 @@ public final class ItemHelper //TODO JavaDoc
 		}
 	}
 	
+	/**
+	 * TODO JAVADOC
+	 * @return
+	 */
+	public static Equivalence<ItemStack> getItemStackEquivalence()
+	{
+		return ITEMSTACK_EQUIVALENCE;
+	}
+	
 	public static enum SortLevel
 	{
 		/** Sorts by items. */
@@ -312,5 +344,4 @@ public final class ItemHelper //TODO JavaDoc
 		/** Sorts by items, damage, and NBT. {@link OreDictionary#WILDCARD_VALUE} does not affect sorting.*/
 		NBT;
 	}
-	
 }
