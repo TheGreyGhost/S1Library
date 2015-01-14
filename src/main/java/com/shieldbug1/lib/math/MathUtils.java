@@ -4,7 +4,7 @@ import java.util.Random;
 /**
  * A Utility class for common mathematical operations.
  */
-public final class MathUtils //TODO finish javadoc
+public final class MathUtils //XXX finish javadoc
 {
 	private MathUtils(){}
 	/**
@@ -101,69 +101,5 @@ public final class MathUtils //TODO finish javadoc
 	public static int max(int a, int b)
 	{
 		return a > b ? a : b;
-	}
-	
-	/**
-	 * @return {@link Byte#valueOf(String)} unless it throws a {@code NumberFormatException}, in which case it returns null.
-	 * @see Byte#valueOf(String)
-	 */
-	public static Byte byteParseSafe(String string)
-	{
-		try
-		{
-			return Byte.valueOf(string);
-		}
-		catch(NumberFormatException e)
-		{
-			return null;
-		}
-	}
-	
-	/**
-	 * @return {@link Short#valueOf(String)} unless it throws a {@code NumberFormatException}, in which case it returns null.
-	 * @see Short#valueOf(String)
-	 */
-	public static Short shortParseSafe(String string)
-	{
-		try
-		{
-			return Short.valueOf(string);
-		}
-		catch(NumberFormatException e)
-		{
-			return null;
-		}
-	}
-	
-	/**
-	 * @return {@link Integer#valueOf(String)} unless it throws a {@code NumberFormatException}, in which case it returns null.
-	 * @see Integer#valueOf(String)
-	 */
-	public static Integer intParseSafe(String string)
-	{
-		try
-		{
-			return Integer.valueOf(string);
-		}
-		catch(NumberFormatException e)
-		{
-			return null;
-		}
-	}
-	
-	/**
-	 * @return {@link Long#valueOf(String)} unless it throws a {@code NumberFormatException}, in which case it returns null.
-	 * @see Long#valueOf(String)
-	 */
-	public static Long longParseSafe(String string)
-	{
-		try
-		{
-			return Long.valueOf(string);
-		}
-		catch(NumberFormatException e)
-		{
-			return null;
-		}
 	}
 }

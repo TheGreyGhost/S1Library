@@ -6,7 +6,7 @@ import net.minecraft.client.gui.FontRenderer;
 /**
  * A wrapper class around the Minecraft FontRenderer class made purely for convenience.
  */
-public final class FontWrapper //TODO Font styles.
+public final class FontWrapper //TODO Font styles. Bold, Italic, Underlined, etc.
 {
 	private final FontRenderer fontRenderer;
 	private int wordWrapValue;

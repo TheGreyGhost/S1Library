@@ -75,45 +75,13 @@ public final class CoreFunctions
 		}
 	}
 	
-	/**
-	 * A method to wrap a function so that it synchronises on the input, whenever it is applied.
-	 * @param function - the function to wrap as a SynchronisedFunction.
-	 * @return the wrapped function that will synchronise on the input.
-	 */
-	public static <F, T> Function<F, T> synchronised(Function<F, T> function)
-	{
-		return new SynchronisedFunction(function);
-	}
-	
-	private static class SynchronisedFunction<F, T> implements Function<F, T>
-	{
-		private final Function<F, T> function;
-
-		public SynchronisedFunction(Function<F, T> function)
-		{
-			this.function = function;
-		}
-
-		@Override
-		public T apply(F input)
-		{
-			synchronized(input)
-			{
-				return this.function.apply(input);
-			}
-		}
-	}
-	
 	public static <T> T checkArgument(boolean condition, T reference, String message) //TODO javadoc
 	{
 		if(!condition)
 		{
 			throw new IllegalArgumentException(message);
 		}
-		else
-		{
-			return reference;
-		}
+		return reference;
 	}
 	
 	public static <T> T checkState(boolean state, T reference, String message) //TODO javadoc
@@ -122,14 +90,15 @@ public final class CoreFunctions
 		{
 			throw new IllegalStateException(message);
 		}
-		else
-		{
-			return reference;
-		}
+		return reference;
 	}
 	
 	public static <T> T checkNotNull(T reference, String message) //TODO javadoc
 	{
-		return checkArgument(reference != null, reference, message);
+		if(reference == null)
+		{
+			throw new NullPointerException(message);
+		}
+		return reference;
 	}
 }

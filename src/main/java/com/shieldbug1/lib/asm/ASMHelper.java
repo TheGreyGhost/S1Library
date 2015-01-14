@@ -10,12 +10,12 @@ import java.util.Iterator;
 
 import net.minecraftforge.fml.common.FMLLog;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.objectweb.asm.*;
 import org.objectweb.asm.tree.*;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.shieldbug1.lib.math.MathUtils;
 
 /**
  * A class to help with the use of ASM, and particularly the ASM Tree API.
@@ -329,7 +329,13 @@ public class ASMHelper
 		}
 	}
 	
-	public static String getOpcode(int opcode) //TODO javadoc
+	/**
+	 * Returns the name of the bytecode instruction represented by this opcode, or the opcode itself
+	 * as a string if no bytecode instruction name match is found.
+	 * @param opcode - the opcode to get the name for.
+	 * @return the name of the opcode.
+	 */
+	public static String getOpcode(int opcode)
 	{
 		String s = opCodes.inverse().get(opcode);
 		if(s == null)
@@ -339,13 +345,18 @@ public class ASMHelper
 		return s;
 	}
 	
-	public static int getOpcodeFromString(String string)//TODO javadoc
+	/**
+	 * Returns the opcode from a bytecode instruction - if none exists, returns the NOP opcode (0).
+	 * @param string - the instruction to get the opcode from.
+	 * @return
+	 */
+	public static int getOpcodeFromString(String string)
 	{
 		Integer opCode = opCodes.get(string);
 		if(opCode == null)
 		{
-			opCode = MathUtils.intParseSafe(string);
+			opCode = NumberUtils.toInt(string); // Returns parsed string or 0
 		}
-		return opCode != null ? opCode : 0;
+		return opCode;
 	}
 }

@@ -1,4 +1,4 @@
-package com.shieldbug1.lib.java.collect;
+package com.shieldbug1.lib.java.collect.equivalence;
 
 import static com.shieldbug1.lib.util.CoreFunctions.checkNotNull;
 
@@ -7,7 +7,7 @@ import java.util.*;
 import com.google.common.base.*;
 import com.google.common.base.Equivalence.Wrapper;
 
-public class EquivalenceList<T> extends AbstractList<T> //TODO test
+public class EquivalenceList<T> extends AbstractList<T> //TODO test and JavaDoc
 {
 	private final List<Wrapper<T>> list;
 	private final Equivalence<T> equivalence;
@@ -77,10 +77,7 @@ public class EquivalenceList<T> extends AbstractList<T> //TODO test
 		{
 			return this.list.remove(this.equivalence.wrap((T)o));
 		}
-		else
-		{
-			return false;	
-		}
+		return false;	
 	}
 
 	@Override
@@ -102,7 +99,7 @@ public class EquivalenceList<T> extends AbstractList<T> //TODO test
 		boolean changed = false;
 		for(T t : c)
 		{
-			changed = changed & this.list.add(this.equivalence.wrap(t));
+			changed = changed | this.list.add(this.equivalence.wrap(t));
 			// Use & instead of && because otherwise not all elements will get added.
 		}
 		return changed;
@@ -125,7 +122,7 @@ public class EquivalenceList<T> extends AbstractList<T> //TODO test
 		boolean changed = false;
 		for(Object o : c)
 		{
-			changed = changed & this.remove(o);
+			changed = changed | this.remove(o);
 		}
 		return changed;
 	}

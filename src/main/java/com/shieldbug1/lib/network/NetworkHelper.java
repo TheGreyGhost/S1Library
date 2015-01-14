@@ -9,6 +9,7 @@ import java.util.zip.GZIPOutputStream;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.*;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -49,7 +50,9 @@ public final class NetworkHelper
 	{
 		if(tileEntity.getWorld() instanceof WorldServer)
 		{
-			//TODO ((WorldServer)tileEntity.getWorldObj()).getPlayerManager().sendToWatching(tileEntity.xCoord >> 4, tileEntity.zCoord >> 4, wrapper.getPacketFrom(message));
+			@SuppressWarnings("unused")
+			BlockPos pos = tileEntity.getPos();
+			//((WorldServer)tileEntity.getWorld()).getPlayerManager().sendToWatching(pos.getX() >> 4, pos.getZ() >> 4, wrapper.getPacketFrom(message)); XXX Awaiting PR
 		}
 	}
 	
@@ -113,7 +116,7 @@ public final class NetworkHelper
 	 * Decompresses a byte array into an NBTTagCompound.
 	 * Compression must've been done through {@link #compress(NBTTagCompound)}.
 	 * @param bytes - the byte array to decompress.
-	 * @param size - the maximum size of data? TODO figure this one out.
+	 * @param size - the maximum size of data? XXX figure this one out.
 	 * @return the decompressed NBTTagCompound.
 	 */
 	public static NBTTagCompound decompress(byte[] bytes, NBTSizeTracker size)
