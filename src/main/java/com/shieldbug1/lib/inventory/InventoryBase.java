@@ -1,13 +1,17 @@
 package com.shieldbug1.lib.inventory;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
+import static com.shieldbug1.lib.util.helpers.ItemHelper.areItemsEqualWithMetadataAndNBT;
+
+import java.util.AbstractCollection;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 
-public abstract class InventoryBase implements IInventory //TODO javadoc
+public abstract class InventoryBase extends AbstractCollection<ItemStack> implements IInventory //TODO javadoc
 {
 	private final String customName;
 	private final int stackSizeLimit;
@@ -53,7 +57,6 @@ public abstract class InventoryBase implements IInventory //TODO javadoc
 			if(selected.stackSize <= count)
 			{
 				this.setInventorySlotContents(index, null);
-				this.markDirty();
 				return selected;
 			}
 			else
@@ -63,7 +66,6 @@ public abstract class InventoryBase implements IInventory //TODO javadoc
 				{
 					this.setInventorySlotContents(index, null);
 				}
-				this.markDirty();
 				return ret;
 			}
 		}
@@ -121,9 +123,96 @@ public abstract class InventoryBase implements IInventory //TODO javadoc
 		return 0;
 	}
 	
+	protected transient int modCount = 0;
+	
 	@Override
 	public void markDirty()
 	{
+		this.modCount++;
 		this.listener.markDirty();
+	}
+	
+	public abstract ItemStack[] toArray();
+
+	@Override
+	public int size()
+	{
+		return this.getSizeInventory();
+	}
+
+	@Override
+	public boolean isEmpty()
+	{
+		for(ItemStack stack : this)
+		{
+			if(stack != null)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public boolean contains(Object o)
+	{
+		if(o == null)
+		{
+			for(ItemStack stack : this)
+			{
+				if(stack == null)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+		if(o instanceof ItemStack)
+		{
+			ItemStack other = (ItemStack) o;
+			for(ItemStack stack : this)
+			{
+				if(areItemsEqualWithMetadataAndNBT(other, stack))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean add(ItemStack e)
+	{
+		for(int i = 0; i < this.size(); i++)
+		{
+			ItemStack stack = this.getStackInSlot(i);
+			if(stack == null)
+			{
+				this.setInventorySlotContents(i, e);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean remove(Object o)
+	{
+		if(o instanceof ItemStack)
+		{
+			ItemStack other = (ItemStack) o;
+			for(int i = 0; i < this.size(); i++)
+			{
+				ItemStack stack = this.getStackInSlot(i);
+				if(areItemsEqualWithMetadataAndNBT(other, stack))
+				{
+					this.setInventorySlotContents(i, null);
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

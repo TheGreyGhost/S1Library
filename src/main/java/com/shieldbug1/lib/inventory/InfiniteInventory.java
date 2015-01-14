@@ -1,18 +1,20 @@
 package com.shieldbug1.lib.inventory;
 
+import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
-import com.google.common.collect.Lists;
+import com.google.common.base.Supplier;
 
 public class InfiniteInventory extends InventoryBase //TODO javadoc
 {
-	private final List<ItemStack> inventory = Lists.newArrayList();
+	private final List<ItemStack> inventory;
 	
-	public InfiniteInventory(String customName, int stackSizeLimit, MarkedDirtyListener listener)
+	public InfiniteInventory(String customName, int stackSizeLimit, MarkedDirtyListener listener, Supplier<? extends List<ItemStack>> supplier)
 	{
 		super(customName, stackSizeLimit, listener);
+		this.inventory = supplier.get();
 	}
 
 	@Override
@@ -45,5 +47,18 @@ public class InfiniteInventory extends InventoryBase //TODO javadoc
 	public void clear()
 	{
 		this.inventory.clear();
+		this.markDirty();
+	}
+
+	@Override
+	public ItemStack[] toArray()
+	{
+		return (ItemStack[]) this.inventory.toArray();
+	}
+
+	@Override
+	public Iterator<ItemStack> iterator()
+	{
+		return this.inventory.iterator();
 	}
 }

@@ -1,5 +1,7 @@
 package com.shieldbug1.lib.inventory;
 
+import java.util.*;
+
 import net.minecraft.item.ItemStack;
 
 public class DefaultInventory extends InventoryBase //TODO javadoc
@@ -39,7 +41,7 @@ public class DefaultInventory extends InventoryBase //TODO javadoc
 			this.markDirty();
 		}
 	}
-
+	
 	@Override
 	public void clear()
 	{
@@ -47,5 +49,69 @@ public class DefaultInventory extends InventoryBase //TODO javadoc
 		{
 			this.inventory[i] = null;
 		}
+		this.markDirty();
+	}
+
+	@Override
+	public ItemStack[] toArray()
+	{
+		return Arrays.copyOf(this.inventory, this.size);
+	}
+	
+	
+	/* Pure copy of ArrayList#iterator */
+	@Override
+	public Iterator<ItemStack> iterator()
+	{
+		return new Itr();
+	}
+	
+	private class Itr implements Iterator<ItemStack>
+	{
+		int cursor = 0;
+		int lastRet = -1;
+		int expectedModCount = modCount;
+		
+		@Override
+		public boolean hasNext()
+		{
+			return cursor != size;
+		}
+
+		@Override
+		public ItemStack next()
+		{
+			checkForComod();
+			int i = cursor;
+			if(i >= size)
+			{
+				throw new NoSuchElementException();
+			}
+			cursor = i + 1;
+			return inventory[lastRet = i];
+		}
+
+		@Override
+		public void remove()
+		{
+			if(lastRet < 0)
+			{
+				throw new IllegalStateException();
+			}
+			checkForComod();
+			DefaultInventory.this.setInventorySlotContents(lastRet, null);
+			cursor = lastRet;
+			lastRet = -1;
+			expectedModCount = modCount;
+		}
+		
+		private void checkForComod()
+		{
+			if(modCount != expectedModCount)
+			{
+				throw new ConcurrentModificationException();
+			}
+		}
+		
 	}
 }
