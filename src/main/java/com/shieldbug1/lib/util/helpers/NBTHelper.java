@@ -1,11 +1,16 @@
 package com.shieldbug1.lib.util.helpers;
 
+import static com.shieldbug1.lib.util.helpers.NBTHelper.DataType.INTEGER;
 import static com.shieldbug1.lib.util.helpers.NBTHelper.DataType.LONG;
 
 import java.util.UUID;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.registry.GameData;
 
 /**
  * A class to help with using the Named Binary Tag (NBT) classes.
@@ -188,6 +193,50 @@ public final class NBTHelper
 						return compound.getCompoundTag(key);
 					}
 				};
+		public static final DataType<Block> BLOCK = new DataType<Block>()
+				{
+					@Override
+					public void set(NBTTagCompound compound, String key, Block value)
+					{
+						compound.setString(key, (String) GameData.getBlockRegistry().getNameForObject(value));
+					}
+
+					@Override
+					public Block get(NBTTagCompound compound, String key)
+					{
+						return GameData.getBlockRegistry().getObject(compound.getString(key));
+					}
+			
+				};
+		public static final DataType<Item> ITEM = new DataType<Item>()
+				{
+					@Override
+					public void set(NBTTagCompound compound, String key, Item value)
+					{
+						compound.setString(key, (String) GameData.getItemRegistry().getNameForObject(value));
+					}
+
+					@Override
+					public Item get(NBTTagCompound compound, String key)
+					{
+						return GameData.getItemRegistry().getObject(compound.getString(key));
+					}
+			
+				};
+		public static final DataType<ItemStack> ITEMSTACK = new DataType<ItemStack>()
+				{
+					@Override
+					public void set(NBTTagCompound compound, String key, ItemStack value)
+					{
+						compound.setTag(key, loadItemStackToNBT(value));
+					}
+
+					@Override
+					public ItemStack get(NBTTagCompound compound, String key)
+					{
+						return loadItemStackFromNBT(compound.getCompoundTag(key));
+					}
+				};
 		private DataType()
 		{
 			
@@ -274,9 +323,34 @@ public final class NBTHelper
 	 * @param type - the type of data to get.
 	 * @param compound - the NBTTagCompound to get from.
 	 * @param key - the key to read from.
+	 * @return the retrieved value from the compound.
 	 */
 	public static <T> T get(DataType<T> type, NBTTagCompound compound, String key)
 	{
 		return type.get(compound, key);
 	}
+	
+	/**
+	 * Sets an enum value in a non-null NBTTagCompound
+	 * @param compound - the NBTTagCompound to write to.
+	 * @param key - the key to write to.
+	 * @param value - the value to set.
+	 */
+	public static void setEnum(NBTTagCompound compound, String key, Enum<?> value)
+	{
+		set(INTEGER, compound, key, value.ordinal());
+	}
+	
+	/**
+	 * Gets an enum value from a non-null NBTTagCompound.
+	 * @param compound - the NBTTagCompound to get from.
+	 * @param key - the key to read from.
+	 * @param clazz - the enum class to get enum from.
+	 * @return the retrieved enum value from the compound.
+	 */
+	public static <T extends Enum<T>> T getEnum(NBTTagCompound compound, String key, Class<T> clazz)
+	{
+		return clazz.getEnumConstants()[get(INTEGER, compound, key)];
+	}
+	
 }
