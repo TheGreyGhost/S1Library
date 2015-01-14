@@ -12,9 +12,9 @@ import sun.misc.Unsafe;
  * It is strongly preferred to use this class rather than the Unsafe instance itself.
  */
 @SuppressWarnings("restriction")
-public class UnsafeWrapper //TODO Javadoc.
+public enum UnsafeWrapper //TODO Javadoc.
 {
-	public static final UnsafeWrapper INSTANCE = new UnsafeWrapper();
+	INSTANCE;
 	
 	private final Unsafe unsafe = ReflectionHelper.getPrivateValue(Unsafe.class, null, "theUnsafe");
 	

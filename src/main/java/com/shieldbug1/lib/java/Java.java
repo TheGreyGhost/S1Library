@@ -1,7 +1,11 @@
 package com.shieldbug1.lib.java;
 
-import static com.shieldbug1.lib.java.Java.JavaVersion.*;
+import static org.apache.logging.log4j.Level.INFO;
+import net.minecraftforge.fml.common.FMLLog;
 import sun.reflect.Reflection;
+
+import com.shieldbug1.lib.java.ClassContextStrategy.AccessibilityManager;
+import com.shieldbug1.lib.java.ClassContextStrategy.ReflectionStrategy;
 
 public final class Java
 {
@@ -26,36 +30,42 @@ public final class Java
     }
 	
 	/**
-	 * A method that retrieves the current version of Java.
-	 * @return the version of Java that is being run right now.
-	 */
-	public static JavaVersion getJavaVersion()
-	{
-		switch(System.getProperty("java.version").substring(0, 3))
-		{
-		case "1.6": return V1_6;
-		case "1.7": return V1_7;
-		case "1.8": return V1_8;
-		default: return UNKNOWN;
-		}
-	}
-	
-	/**
 	 * @return the class that called the class that called this method.
 	 */
-	public Class<?> getCallingClass()
+	public static Class<?> getCallingClass()
 	{
-		return Reflection.getCallerClass(3);
+		return getCallingClass(1); //we go one more back because we call our own method.
 	}
 	
 	/**
 	 * @param index - how far back the calling class should be: 0 is the calling class, 1 is the calling class before it, etc.
 	 * @return the calling class according to the index.
 	 */
-	public Class<?> getCallingClass(int index)
+	public static Class<?> getCallingClass(int index)
 	{
-		return Reflection.getCallerClass(index + 3);
+		return  strategy.getCallingClass(index);
 	}
 	
-	public static enum JavaVersion	{	V1_6, V1_7, V1_8, UNKNOWN;	}
+	private static final ClassContextStrategy strategy;
+	
+	static
+	{
+		boolean useReflection = true;
+		try
+		{
+			Reflection.getCallerClass(0);
+		}
+		catch(UnsupportedOperationException | NoSuchMethodError e)
+		{
+			FMLLog.log("S1LIB", INFO, "Could not use Reflection strategy to get caller class - using ManagerStrategy instead.");
+			useReflection = false;
+		}
+		strategy = useReflection ? new ReflectionStrategy() : new AccessibilityManager();
+		
+	}
+	
+	/*public static <T> Stream<T> streamFromIterable(Iterable<T> iterator, boolean parallel) XXX UNcomment this in Java 8.
+	{
+		return StreamSupport.stream(iterator.spliterator(), parallel);
+	}*/
 }
