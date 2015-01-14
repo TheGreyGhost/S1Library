@@ -2,14 +2,14 @@ package com.shieldbug1.lib.util.helpers;
 
 import static com.shieldbug1.lib.util.helpers.NBTHelper.DataType.INTEGER;
 import static com.shieldbug1.lib.util.helpers.NBTHelper.DataType.LONG;
+import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 
 import java.util.UUID;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.*;
 import net.minecraftforge.fml.common.registry.GameData;
 
 /**
@@ -236,6 +236,36 @@ public final class NBTHelper
 					{
 						return loadItemStackFromNBT(compound.getCompoundTag(key));
 					}
+				};
+		public static final DataType<ItemStack[]> INVENTORY = new DataType<ItemStack[]>()//TODO test
+				{
+
+					@Override
+					public void set(NBTTagCompound compound, String key, ItemStack[] value)
+					{
+						NBTTagList list = new NBTTagList();
+						for(ItemStack stack : value)
+						{
+							NBTTagCompound stackTag = new NBTTagCompound();
+							ITEMSTACK.set(stackTag, "stack", stack);
+							list.appendTag(stackTag);
+						}
+						compound.setTag(key, list);
+					}
+
+					@Override
+					public ItemStack[] get(NBTTagCompound compound, String key)
+					{
+						NBTTagList list = compound.getTagList(key, TAG_COMPOUND);
+						final int SIZE = list.tagCount();
+						ItemStack[] inventory = new ItemStack[SIZE];
+						for(int i = 0; i < SIZE; i++)
+						{
+							inventory[i] = ITEMSTACK.get(list.getCompoundTagAt(i), "stack");
+						}
+						return inventory;
+					}
+			
 				};
 		private DataType()
 		{
